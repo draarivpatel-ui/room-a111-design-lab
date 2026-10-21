@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';" />
+  <title>Digital Design Lab | Visual Hierarchy &amp; Rhythm Workbench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink-canvas: #0e1117;
+      --ink-elevated: #161b24;
+      --ink-surface: #1d2430;
+      --paper-warm: #f5f2eb;
+      --paper-muted: #d5cfc2;
+      --text-secondary: #9ba3b4;
+      --signal-vermilion: #e04f33;
+      --brass-ochre: #d99b26;
+      --jade-ok: #25a162;
+      --border-hairline: rgba(245, 242, 235, 0.14);
+      --border-strong: rgba(245, 242, 235, 0.28);
+      --shadow-studio: 0 22px 48px rgba(0, 0, 0, 0.48);
+    }
+
+    ::selection {
+      background: var(--signal-vermilion);
+      color: var(--paper-warm);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--ink-canvas);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2b3446;
+      border-radius: 5px;
+      border: 2px solid var(--ink-canvas);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--brass-ochre);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--ink-canvas);
+      color: var(--paper-warm);
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--brass-ochre);
+      outline-offset: 3px;
+    }
+
+    /* Top Floating Navigation Bar */
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 40;
+      max-width: 1240px;
+      margin: 14px auto 0;
+      padding: 0 24px;
+    }
+
+    .topbar-inner {
+      background: rgba(22, 27, 36, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-hairline);
+      border-radius: 12px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--paper-warm);
+      font-weight: 600;
+      font-size: 15.5px;
+    }
+
+    .brand-mark svg {
+      width: 24px;
+      height: 24px;
+      color: var(--signal-vermilion);
+      flex-shrink: 0;
+    }
+
+    .brand-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--paper-muted);
+      font-weight: 400;
+      padding-left: 10px;
+      border-left: 1px solid var(--border-hairline);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--paper-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 13px;
+      border-radius: 8px;
+      transition: background-color 180ms ease, color 180ms ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--ink-surface);
+      color: var(--paper-warm);
+    }
+
+    .nav-links a.cta-pill {
+      background: var(--signal-vermilion);
+      color: var(--paper-warm);
+      font-weight: 600;
+    }
+
+    .nav-links a.cta-pill:hover {
+      background: #c84127;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px 24px 88px;
+    }
+
+    /* Hero Workbench Split */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 36px;
+      align-items: start;
+      padding-bottom: 52px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .hero-copy h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(2.6rem, 4.6vw, 4.15rem);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      color: var(--paper-warm);
+      margin-bottom: 20px;
+      text-wrap: balance;
+    }
+
+    .hero-lead {
+      font-size: 1.125rem;
+      line-height: 1.62;
+      color: var(--paper-muted);
+      max-width: 62ch;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 20px;
+      border-radius: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-primary {
+      background: var(--signal-vermilion);
+      color: var(--paper-warm);
+    }
+    .btn-primary:hover {
+      background: #c84127;
+    }
+
+    .btn-secondary {
+      background: var(--ink-elevated);
+      color: var(--paper-warm);
+      border-color: var(--border-strong);
+    }
+    .btn-secondary:hover {
+      background: var(--ink-surface);
+      border-color: var(--paper-warm);
+    }
+
+    .ledger-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      background: var(--ink-elevated);
+      overflow: hidden;
+    }
+
+    .ledger-cell {
+      padding: 14px 16px;
+      border-right: 1px solid var(--border-hairline);
+    }
+    .ledger-cell:last-child {
+      border-right: none;
+    }
+
+    .ledger-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--brass-ochre);
+      display: block;
+    }
+
+    .ledger-desc {
+      font-size: 12.5px;
+      color: var(--paper-muted);
+      margin-top: 2px;
+    }
+
+    /* Right Hero Panel: Live Spec Sheet */
+    .hero-specimen {
+      background: var(--paper-warm);
+      color: #12151c;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow-studio);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .specimen-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1.5px solid #12151c;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+
+    .specimen-head h2 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: #12151c;
+    }
+
+    .specimen-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .specimen-diagram {
+      background: #12151c;
+      color: var(--paper-warm);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .diagram-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      border: 1px solid rgba(245, 242, 235, 0.18);
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .diagram-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .diagram-rank {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--brass-ochre);
+      font-weight: 600;
+    }
+
+    .diagram-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .diagram-spec {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--paper-muted);
+    }
+
+    .specimen-note {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #262c3a;
+    }
+
+    /* Section Headers (Zero Eyebrow Kickers per craft-floor.md) */
+    .section-block {
+      padding-top: 56px;
+      margin-top: 12px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 400;
+      line-height: 1.08;
+      color: var(--paper-warm);
+    }
+
+    .section-head p {
+      color: var(--paper-muted);
+      max-width: 64ch;
+      font-size: 15.5px;
+      margin-top: 6px;
+    }
+
+    /* Interactive Tool #1: 5-Second Visual Hierarchy Lab */
+    .lab-workbench {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow-studio);
+    }
+
+    .lab-controls {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .control-group h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--paper-warm);
+      margin-bottom: 10px;
+    }
+
+    .poster-Select-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .poster-option {
+      width: 100%;
+      text-align: left;
+      background: var(--ink-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 9px;
+      padding: 12px 14px;
+      color: var(--paper-warm);
+      cursor: pointer;
+      transition: border-color 160ms ease, background-color 160ms ease;
+      font-family: inherit;
+    }
+
+    .poster-option:hover {
+      border-color: var(--border-strong);
+      background: var(--ink-surface);
+    }
+
+    .poster-option.active {
+      border-color: var(--brass-ochre);
+      background: rgba(217, 155, 38, 0.1);
+    }
+
+    .poster-option strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .poster-option span {
+      font-size: 12.5px;
+      color: var(--paper-muted);
+    }
+
+    .timer-readout-box {
+      background: var(--ink-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .timer-digits {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--brass-ochre);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-digits.running {
+      color: var(--signal-vermilion);
+    }
+
+    .timer-status-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--paper-muted);
+      text-align: right;
+    }
+
+    .flash-stage-wrap {
+      position: relative;
+      background: #07090d;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      min-height: 410px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .flash-stage-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(14, 17, 23, 0.9);
+      border-bottom: 1px solid var(--border-hairline);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--paper-muted);
+    }
+
+    .poster-canvas-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    /* Specimen Poster Variants inside 5-Second Lab */
+    .mock-poster {
+      width: 100%;
+      max-width: 520px;
+      min-height: 290px;
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: opacity 150ms ease;
+    }
+
+    .mock-cluttered {
+      background: #1e1b4b;
+      border: 2px dashed #f43f5e;
+      color: #fde047;
+    }
+
+    .clutter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      font-size: 11.5px;
+    }
+
+    .clutter-pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 8px;
+      border-radius: 4px;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .mock-balanced {
+      background: #f5f2eb;
+      color: #12151c;
+      border: 1px solid #cbd5e1;
+    }
+
+    .mock-focal {
+      background: #0b132b;
+      color: #f8fafc;
+      border: 2px solid #38bdf8;
+    }
+
+    /* Recall Quiz Overlay when timer hits 0.00s */
+    .blackout-quiz {
+      position: absolute;
+      inset: 0;
+      background: #07090d;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 34px;
+      z-index: 10;
+    }
+
+    .blackout-quiz.visible {
+      display: flex;
+    }
+
+    .blackout-quiz h4 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--paper-warm);
+      margin-bottom: 6px;
+    }
+
+    .blackout-quiz p {
+      font-size: 14px;
+      color: var(--paper-muted);
+      margin-bottom: 16px;
+    }
+
+    .quiz-choices {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-btn {
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--paper-warm);
+      padding: 11px 15px;
+      border-radius: 8px;
+      text-align: left;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 150ms ease, border-color 150ms ease;
+    }
+
+    .quiz-btn:hover {
+      background: var(--ink-surface);
+      border-color: var(--brass-ochre);
+    }
+
+    .quiz-feedback {
+      font-size: 13.5px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-hairline);
+      color: var(--paper-warm);
+      display: none;
+    }
+
+    /* Interactive Tool #2: 16-Beat Teen Taal Rhythm & Cymatic Grid Sequencer */
+    .taal-workbench {
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow-studio);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .taal-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .taal-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .taal-presets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-btn {
+      background: var(--ink-canvas);
+      border: 1px solid var(--border-hairline);
+      color: var(--paper-muted);
+      padding: 7px 12px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: border-color 150ms ease, color 150ms ease;
+    }
+
+    .chip-btn:hover,
+    .chip-btn.active {
+      border-color: var(--brass-ochre);
+      color: var(--paper-warm);
+    }
+
+    .vibhag-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .vibhag-box {
+      background: var(--ink-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .vibhag-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--paper-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .vibhag-title strong {
+      color: var(--brass-ochre);
+    }
+
+    .beat-cells {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .beat-cell {
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 7px;
+      padding: 8px 6px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--paper-warm);
+      font-family: 'JetBrains Mono', monospace;
+      transition: border-color 140ms ease, background-color 140ms ease;
+    }
+
+    .beat-cell:hover {
+      border-color: var(--paper-muted);
+    }
+
+    .beat-cell.playing {
+      background: rgba(224, 79, 51, 0.24);
+      border-color: var(--signal-vermilion);
+    }
+
+    .beat-num {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      display: block;
+    }
+
+    .beat-bol {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--paper-warm);
+      margin-top: 2px;
+      display: block;
+    }
+
+    .beat-cell[data-bol="Dha"] .beat-bol { color: #f59e0b; }
+    .beat-cell[data-bol="Dhin"] .beat-bol { color: #38bdf8; }
+    .beat-cell[data-bol="Na"] .beat-bol { color: #34d399; }
+    .beat-cell[data-bol="Tin"] .beat-bol { color: #c084fc; }
+
+    .cymatic-panel {
+      background: #07090d;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cymatic-panel canvas {
+      width: 260px;
+      height: 260px;
+      display: block;
+    }
+
+    .cymatic-caption {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--paper-muted);
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 10px;
+    }
+
+    /* Workshop Run-of-Show & Boba Drops Starter Code */
+    .boba-split {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .schedule-panel,
+    .code-panel {
+      background: var(--ink-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .schedule-panel h3,
+    .code-panel h3 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--paper-warm);
+    }
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-top: 8px;
+    }
+
+    .timeline-table th,
+    .timeline-table td {
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border-hairline);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .timeline-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--brass-ochre);
+      font-weight: 600;
+    }
+
+    .timeline-table td.time-col {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--paper-warm);
+      white-space: nowrap;
+      font-size: 12.5px;
+    }
+
+    .code-box {
+      background: #07090d;
+      border: 1px solid var(--border-hairline);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #d6cfc2;
+      overflow-x: auto;
+      max-height: 250px;
+      margin: 12px 0 16px;
+      white-space: pre;
+    }
+
+    footer.site-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 13.5px;
+      color: var(--paper-muted);
+    }
+
+    .hero-split > *,
+    .lab-workbench > *,
+    .taal-workbench > *,
+    .boba-split > * {
+      min-width: 0;
+    }
+
+    @media (max-width: 960px) {
+      .hero-split,
+      .lab-workbench,
+      .taal-workbench,
+      .boba-split {
+        grid-template-columns: 1fr;
+      }
+      .vibhag-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        overflow-x: hidden;
+      }
+      .topbar {
+        padding: 0 16px;
+      }
+      .topbar-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 12px 0;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .nav-links a {
+        padding: 6px 10px;
+        font-size: 12.5px;
+      }
+      .container {
+        padding: 24px 16px 64px;
+      }
+      .hero-copy h1 {
+        font-size: 2.15rem;
+      }
+      .ledger-strip {
+        grid-template-columns: 1fr;
+      }
+      .ledger-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+      .vibhag-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="#top" class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="3" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="9" y1="21" x2="9" y2="9" />
+        </svg>
+        <span>Digital Design Lab</span>
+        <span class="brand-sub">Hierarchy &amp; Rhythm Studio</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary Workshop Sections">
+        <a href="#hierarchy-lab">5-Second Hierarchy Lab</a>
+        <a href="#rhythm-sequencer">16-Beat Grid Rhythm</a>
+        <a href="#boba-drops" class="cta-pill">Boba Drops Starter Kit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="top">
+    <!-- Hero Workbench -->
+    <section class="hero-split">
+      <div class="hero-copy">
+        <h1>Where Visual Hierarchy Meets Living Code.</h1>
+        <p class="hero-lead">
+          Founded by Aariv Patel with 71 student applicants in its inaugural cohort, our student design workshop teaches builders to strip away template clutter, test every layout against a five-second stopwatch, and ship real HTML and CSS sites to the live web.
+        </p>
+        <div class="hero-actions">
+          <a href="#hierarchy-lab" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="13" r="8" />
+              <path d="M12 9v4l2.5 2.5" />
+              <path d="M9 2h6" />
+            </svg>
+            Launch 5.00s Flash Test
+          </a>
+          <a href="#rhythm-sequencer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="4" />
+              <line x1="12" y1="3" x2="12" y2="5" />
+              <line x1="12" y1="19" x2="12" y2="21" />
+            </svg>
+            Open Teen Taal Sequencer
+          </a>
+        </div>
+
+        <div class="ledger-strip">
+          <div class="ledger-cell">
+            <span class="ledger-val">71 Applicants</span>
+            <span class="ledger-desc">Solo-founded Year 1 cohort (47 beginners)</span>
+          </div>
+          <div class="ledger-cell">
+            <span class="ledger-val">5.00 Seconds</span>
+            <span class="ledger-desc">Projector flash test for visual focal order</span>
+          </div>
+          <div class="ledger-cell">
+            <span class="ledger-val">Weekly Studio</span>
+            <span class="ledger-desc">Hands-on typography, grid systems &amp; live HTML/CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-specimen" aria-label="Three-Tier Hierarchy Spec">
+        <div class="specimen-head">
+          <h2>The Studio Three-Part Rule</h2>
+          <span class="specimen-code">SPEC // 01-02-03</span>
+        </div>
+        <div class="specimen-diagram">
+          <div class="diagram-row">
+            <span class="diagram-rank">1ST EYE STOP (0.0s - 1.5s)</span>
+            <span class="diagram-title">Single Unmistakable Headline</span>
+            <span class="diagram-spec">&gt; 48px Contrast</span>
+          </div>
+          <div class="diagram-row">
+            <span class="diagram-rank">2ND EYE STOP (1.5s - 3.5s)</span>
+            <span class="diagram-title">One Supporting Context Line</span>
+            <span class="diagram-spec">65ch Measure</span>
+          </div>
+          <div class="diagram-row">
+            <span class="diagram-rank">3RD EYE STOP (3.5s - 5.0s)</span>
+            <span class="diagram-title">Direct Action &amp; Studio Anchor</span>
+            <span class="diagram-spec">1 Focal Button</span>
+          </div>
+        </div>
+        <p class="specimen-note">
+          When beginners open Canva or Figma, software templates tempt them to place twelve competing fonts and neon stickers on a single canvas. In our Digital Design Lab, we coach hands-off: every poster must survive a five-second flash before it ships.
+        </p>
+      </aside>
+    </section>
+
+    <!-- Interactive Tool #1: Live 5-Second Visual Hierarchy Lab -->
+    <section class="section-block" id="hierarchy-lab">
+      <div class="section-head">
+        <div>
+          <h2>Interactive Workbench 1: The Live 5-Second Visual Hierarchy Lab</h2>
+          <p>Select one of three student poster drafts below, click <strong>Start 5.00s Flash</strong>, and watch the layout under our studio stopwatch. When the screen snaps to matte black at 0.00s, test whether you can recall the exact room and time.</p>
+        </div>
+      </div>
+
+      <div class="lab-workbench">
+        <div class="lab-controls">
+          <div class="control-group">
+            <h3>1. Choose Poster Specimen</h3>
+            <div class="poster-Select-list" role="radiogroup" aria-label="Poster Layouts">
+              <button type="button" class="poster-option active" data-poster="focal" onclick="selectPoster('focal')">
+                <strong>Specimen A: High-Contrast Focal Point</strong>
+                <span>FrostFuel Launch | 1 Headline + 1 Subline + 1 Action</span>
+              </button>
+              <button type="button" class="poster-option" data-poster="balanced" onclick="selectPoster('balanced')">
+                <strong>Specimen B: Balanced Editorial Grid</strong>
+                <span>Community Library Teen Lab | Structured 2-column Swiss layout</span>
+              </button>
+              <button type="button" class="poster-option" data-poster="cluttered" onclick="selectPoster('cluttered')">
+                <strong>Specimen C: Cluttered Template Anti-Pattern</strong>
+                <span>9 Competing Badges | Zero focal hierarchy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h3>2. Run 60fps Stopwatch &amp; Audio Metronome</h3>
+            <div class="timer-readout-box">
+              <div class="timer-digits" id="timerDisplay">5.00s</div>
+              <div class="timer-status-text" id="timerStatus">READY ON PROJECTOR<br>Web Audio Tick Armed</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn btn-primary" style="flex:1; justify-content:center;" id="startFlashBtn" onclick="startFiveSecondFlash()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              Start 5.00s Flash
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="resetFlashLab()">Reset</button>
+          </div>
+        </div>
+
+        <div class="flash-stage-wrap">
+          <div class="flash-stage-bar">
+            <span id="stageLabel">SPECIMEN A // FROSTFUEL HIGH-CONTRAST FOCAL HIERARCHY</span>
+            <span id="RecallScoreBadge">Recall Score: 0 / 0 Verified</span>
+          </div>
+
+          <div class="poster-canvas-area" id="posterStage">
+            <!-- Specimen A rendered by default -->
+          </div>
+
+          <div class="blackout-quiz" id="blackoutQuiz" aria-live="polite">
+            <h4>0.00s: Projector Blanked to Matte Black.</h4>
+            <p id="quizPromptText">Without looking back, what was the exact action time and location on the poster?</p>
+            <div class="quiz-choices" id="quizChoices"></div>
+            <div class="quiz-feedback" id="quizFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tool #2: 16-Beat Teen Taal Visual & Audio Rhythm Sequencer -->
+    <section class="section-block" id="rhythm-sequencer">
+      <div class="section-head">
+        <div>
+          <h2>Interactive Workbench 2: 16-Beat Teen Taal Visual &amp; Audio Rhythm Sequencer</h2>
+          <p>Classical Indian tabla percussion and visual grid systems share the same law: without deliberate spacing (<em>Khali</em>, the open 9th beat), rhythm collapses into noise. Click any beat below to toggle <em>Dha, Dhin, Na,</em> or <em>Tin</em> and play the synthesized Web Audio loop while observing the live cymatic standing-wave nodal canvas.</p>
+        </div>
+      </div>
+
+      <div class="taal-workbench">
+        <div class="taal-left">
+          <div class="taal-toolbar">
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button type="button" class="btn btn-primary" id="playTaalBtn" onclick="toggleTaalPlayback()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                <span id="playTaalLabel">Play 16-Beat Loop</span>
+              </button>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--paper-muted);" id="activeBeatReadout">Beat: 01 / 16 (Sam)</span>
+            </div>
+
+            <div class="taal-presets">
+              <button type="button" class="chip-btn active" onclick="loadTaalPreset('theka', this)">Teen Taal Theka</button>
+              <button type="button" class="chip-btn" onclick="loadTaalPreset('kayda', this)">Kayda Double-Time</button>
+              <button type="button" class="chip-btn" onclick="loadTaalPreset('khali', this)">Khali Space Study</button>
+            </div>
+          </div>
+
+          <div class="vibhag-grid" id="vibhagGrid">
+            <!-- Populated by JS: 4 Vibhags x 4 Beats = 16 Beats -->
+          </div>
+
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px; color:var(--paper-muted); border-top:1px solid var(--border-hairline); padding-top:12px;">
+            <span><strong style="color:#f59e0b;">Dha:</strong> Bayan bass + Dayan treble (68 Hz + 294 Hz)</span>
+            <span><strong style="color:#38bdf8;">Dhin:</strong> Open harmonic bell (72 Hz + 330 Hz)</span>
+            <span><strong style="color:#34d399;">Na:</strong> Crisp Kinara rim (440 Hz)</span>
+            <span><strong style="color:#c084fc;">Tin:</strong> Soft Maidan wave (392 Hz)</span>
+          </div>
+        </div>
+
+        <div class="cymatic-panel">
+          <canvas id="cymaticCanvas" width="520" height="520"></canvas>
+          <div class="cymatic-caption">
+            <span id="cymaticModeText">HARMONIC NODES: 16-FOLD</span>
+            <span id="cymaticFreqText">SYAHI RESONANCE: 294.0 Hz</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Boba Drops Starter Kit & Studio Run of Show -->
+    <section class="section-block" id="boba-drops">
+      <div class="section-head">
+        <div>
+          <h2>Hack Club Boba Drops Workshop &amp; Student Starter Template</h2>
+          <p>Every student builder in the Digital Design Lab who turns their poster hierarchy into a live single-file HTML and CSS page earns a guaranteed $5 boba grant from Hack Club. Use our 45-minute studio run-of-show and one-click starter code below.</p>
+        </div>
+      </div>
+
+      <div class="boba-split">
+        <div class="schedule-panel">
+          <div>
+            <h3>45-Minute Studio Session Run-of-Show</h3>
+            <p style="font-size:14px; color:var(--paper-muted); margin-bottom:10px;">Digital Design Lab Weekly Workshop (Hands-On Typography, Hierarchy &amp; Live Web Shipping)</p>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>Window</th>
+                  <th>Instructor &amp; Student Milestone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="time-col">00:00 - 05:00</td>
+                  <td>Open laptop in the studio, copy the single-file HTML starter on the right into VS Code or GitHub web editor.</td>
+                </tr>
+                <tr>
+                  <td class="time-col">05:00 - 15:00</td>
+                  <td>Map the 3-Part Visual Hierarchy directly to semantic tags: <code>&lt;h1&gt;</code> Headline, <code>&lt;p&gt;</code> Supporting Line, and <code>&lt;a&gt;</code> Action.</td>
+                </tr>
+                <tr>
+                  <td class="time-col">15:00 - 32:00</td>
+                  <td>Customize brand palette tokens (<em>FrostFuel, BobaBurst, Glacier Gear,</em> or <em>NeonByte</em>) and run a partner 5-Second Flash Test.</td>
+                </tr>
+                <tr>
+                  <td class="time-col">32:00 - 45:00</td>
+                  <td>Enable GitHub Pages in 2 clicks, verify live mobile URL, and submit to <code>boba.hackclub.com</code> to unlock the $5 grant.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:16px; font-size:13px; color:var(--paper-muted);">
+            <strong>Hackatime &amp; High Seas Bonus:</strong> Connect your editor to <code>https://waka.hackclub.com/api/v1</code> so every hour spent building web layouts and science-fair code redeems for guaranteed hardware.
+          </div>
+        </div>
+
+        <div class="code-panel">
+          <div>
+            <h3>Copy-Paste Student Starter (<code>index.html</code>)</h3>
+            <p style="font-size:14px; color:var(--paper-muted);">Zero external dependencies. Passes WCAG AA contrast and the Studio 5-Second Hierarchy Test out of the box.</p>
+            <pre class="code-box" id="bobaStarterCode">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;FrostFuel | Digital Design Lab Launch Drop&lt;/title&gt;
+  &lt;style&gt;
+    :root { --bg: #0b132b; --surface: #1c2541; --accent: #38bdf8; --text: #f8fafc; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, sans-serif; background: var(--bg); color: var(--text);
+      min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    }
+    main {
+      max-width: 680px; background: var(--surface); border: 2px solid var(--accent);
+      border-radius: 16px; padding: 48px 40px; box-shadow: 0 24px 48px rgba(0,0,0,0.45);
+    }
+    h1 { font-size: 3rem; line-height: 1.05; color: var(--accent); margin-bottom: 14px; }
+    p { font-size: 1.2rem; line-height: 1.55; opacity: 0.9; margin-bottom: 28px; }
+    a.btn {
+      display: inline-block; background: var(--accent); color: var(--bg);
+      font-weight: 700; padding: 13px 26px; border-radius: 8px; text-decoration: none;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main&gt;
+    &lt;h1&gt;CHILL THE NOISE.&lt;/h1&gt;
+    &lt;p&gt;Zero-clutter glacier hydration designed in the Digital Design Lab.&lt;/p&gt;
+    &lt;a class="btn" href="#claim"&gt;Claim Your Launch Bottle&lt;/a&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <button type="button" class="btn btn-primary" onclick="copyStarterTemplate(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              <span>Copy Starter HTML for Boba Drops</span>
+            </button>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--jade-ok);" id="copyConfirmMsg">Ready to deploy in 60s</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div>Built by <strong>Aariv Patel</strong> | Founder, Digital Design Lab &amp; Community Library Teen Design Workshop</div>
+      <div style="font-family:'JetBrains Mono',monospace;">Zero External Dependencies | Web Audio Synth + 60fps Canvas</div>
+    </footer>
+  </main>
+
+  <script>
+    // Shared Web Audio Context (initialized on user gesture)
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playMetronomeTick(isFinal) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = isFinal ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(isFinal ? 880 : 1200, ctx.currentTime);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (isFinal ? 0.18 : 0.055));
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + (isFinal ? 0.19 : 0.06));
+    }
+
+    // -----------------------------------------------------------------------
+    // WORKBENCH 1: 5-SECOND VISUAL HIERARCHY LAB
+    // -----------------------------------------------------------------------
+    const POSTER_DATA = {
+      focal: {
+        label: 'SPECIMEN A // FROSTFUEL HIGH-CONTRAST FOCAL HIERARCHY',
+        html: `
+          <div class="mock-poster mock-focal">
+            <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:12px; color:#38bdf8;">
+              <span>FROSTFUEL // COLD FOCUS</span>
+              <span>CONTRAST 14.2:1</span>
+            </div>
+            <div style="margin: 18px 0;">
+              <div style="font-size:40px; font-weight:700; line-height:1.02; color:#ffffff; letter-spacing:-0.03em;">CHILL THE NOISE.</div>
+              <p style="font-size:15px; color:#cbd5e1; margin-top:10px; max-width:42ch;">One headline, one supporting line, and one unmistakable studio anchor.</p>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#38bdf8; color:#0b132b; padding:12px 16px; border-radius:8px; font-weight:700; font-size:14px;">
+              <span>STUDIO LAB // WEEKLY SESSION</span>
+              <span>FREE BOBA DROP</span>
+            </div>
+          </div>
+        `,
+        question: 'In Specimen A, what was the exact studio anchor in the high-contrast bar?',
+        choices: [
+          { text: 'Studio Lab Weekly Session (Free Boba Drop)', correct: true, why: 'Passed! Because Specimen A strips away competing badges and uses a 14.2:1 focal bar, your eye locked onto "CHILL THE NOISE" and "STUDIO LAB // WEEKLY SESSION" well inside 5.00 seconds.' },
+          { text: 'Tuesday 2:00 PM in Lecture Hall B', correct: false, why: 'Not quite. Look again at the high-contrast cyan action bar at the bottom of Specimen A: Studio Lab Weekly Session.' },
+          { text: 'Thursday 4:15 PM in the Main Auditorium', correct: false, why: 'Incorrect. The bottom focal bar anchored the Studio Lab Weekly Session.' }
+        ]
+      },
+      balanced: {
+        label: 'SPECIMEN B // COMMUNITY LIBRARY TEEN LAB GRID',
+        html: `
+          <div class="mock-poster mock-balanced">
+            <div style="border-bottom:2px solid #12151c; padding-bottom:8px; display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+              <span>COMMUNITY LIBRARY // TEEN DIGITAL LAB</span>
+              <span>90-MIN HANDS-ON</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1.25fr 0.75fr; gap:16px; margin:16px 0; align-items:center;">
+              <div>
+                <div style="font-family:'Instrument Serif',serif; font-size:34px; line-height:1.05; color:#12151c;">Build Real Posters After School, Not at 2:00 PM.</div>
+                <p style="font-size:13.5px; color:#334155; margin-top:8px;">Free wireless mice, USB portfolio drives, and live Canva &amp; Figma coaching.</p>
+              </div>
+              <div style="background:#12151c; color:#f5f2eb; padding:12px; border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:12px;">
+                <div style="color:#f59e0b; font-weight:700;">SATURDAY 2:30 PM</div>
+                <div style="margin-top:4px;">Teen Lab Studio</div>
+                <div style="margin-top:4px; color:#34d399;">20 Seats Open</div>
+              </div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#1e293b;">Takeaway: Export a 300 DPI PNG + 5-Second Hierarchy Scorecard</div>
+          </div>
+        `,
+        question: 'In Specimen B, what scheduling problem did the headline solve and when does the Teen Lab meet?',
+        choices: [
+          { text: 'Moved the weekday 2:00 PM class to Saturday 2:30 PM in the Teen Lab Studio', correct: true, why: 'Spot on! The 2-column Swiss grid separates the narrative headline on the left from the high-contrast black schedule box on the right.' },
+          { text: 'Moved the workshop to Monday at 8:00 AM in the Cafeteria', correct: false, why: 'Check the right-hand callout box: Saturday 2:30 PM in the Teen Lab Studio.' },
+          { text: 'Replaced digital design with paper origami crafts', correct: false, why: 'Specimen B specifically pitches hands-on Canva and Figma portfolio coaching.' }
+        ]
+      },
+      cluttered: {
+        label: 'SPECIMEN C // CLUTTERED TEMPLATE ANTI-PATTERN (12 COMPETING ELEMENTS)',
+        html: `
+          <div class="mock-poster mock-cluttered">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#f472b6;">
+              <span>NEW!! JOIN NOW!! DONT MISS OUT!!</span>
+              <span>FREE STICKERS + FONTS + CLIPART!!</span>
+            </div>
+            <div class="clutter-grid" style="margin:10px 0;">
+              <div class="clutter-pill">Canva Tips!</div>
+              <div class="clutter-pill">3D Gradients!</div>
+              <div class="clutter-pill">Bring Laptop!</div>
+              <div class="clutter-pill"> Neon Drop Shadows</div>
+              <div class="clutter-pill">Studio Lab Session</div>
+              <div class="clutter-pill">15 Fonts Used!</div>
+              <div class="clutter-pill"> Flyer Contest</div>
+              <div class="clutter-pill">Sign Up Sheet</div>
+              <div class="clutter-pill">Ask A Friend!</div>
+            </div>
+            <div style="font-size:18px; font-weight:700; text-align:center; background:#ec4899; color:#ffffff; padding:8px; border-radius:6px;">
+              SUPER MEGA DESIGN EXTRAVAGANZA EVENT 2026!!
+            </div>
+          </div>
+        `,
+        question: 'Be honest: in Specimen C, could you immediately spot the studio session location inside 5.00 seconds?',
+        choices: [
+          { text: 'No, it was buried inside 9 equal-sized pills ("Studio Lab Session" had zero contrast)', correct: true, why: 'Exactly why we teach the 5-Second Test! When all 9 boxes have the same weight and border, the human eye cannot hierarchy-sort the studio location before the 5.00s clock runs out.' },
+          { text: 'Yes, the studio location was in 48px bold type at the top', correct: false, why: 'Look closely at Specimen C: the studio label was hidden inside cell #5 of a 9-cell clutter grid at 11.5px!' }
+        ]
+      }
+    };
+
+    let currentPosterKey = 'focal';
+    let flashRaf = null;
+    let flashActive = false;
+    let verifiedCount = 0;
+    let totalAttempts = 0;
+
+    function selectPoster(key) {
+      if (flashActive) cancelAnimationFrame(flashRaf);
+      flashActive = false;
+      currentPosterKey = key;
+      document.querySelectorAll('.poster-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.poster === key);
+      });
+      document.getElementById('stageLabel').textContent = POSTER_DATA[key].label;
+      document.getElementById('posterStage').innerHTML = POSTER_DATA[key].html;
+      document.getElementById('blackoutQuiz').classList.remove('visible');
+      const td = document.getElementById('timerDisplay');
+      td.textContent = '5.00s';
+      td.classList.remove('running');
+      document.getElementById('timerStatus').innerHTML = 'READY ON PROJECTOR<br>Web Audio Tick Armed';
+    }
+
+    function startFiveSecondFlash() {
+      if (flashActive) cancelAnimationFrame(flashRaf);
+      flashActive = true;
+      document.getElementById('blackoutQuiz').classList.remove('visible');
+      document.getElementById('posterStage').innerHTML = POSTER_DATA[currentPosterKey].html;
+
+      const td = document.getElementById('timerDisplay');
+      const status = document.getElementById('timerStatus');
+      td.classList.add('running');
+      status.innerHTML = 'FLASH ACTIVE (60FPS)<br>Scan focal hierarchy now!';
+
+      const duration = 5000;
+      const startTime = performance.now();
+      let lastSecondTick = 5;
+      playMetronomeTick(false);
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, duration - elapsed);
+        const sec = remaining / 1000;
+        td.textContent = sec.toFixed(2) + 's';
+
+        const ceilSec = Math.ceil(sec);
+        if (ceilSec < lastSecondTick && ceilSec > 0) {
+          lastSecondTick = ceilSec;
+          playMetronomeTick(false);
+        }
+
+        if (remaining > 0) {
+          flashRaf = requestAnimationFrame(step);
+        } else {
+          flashActive = false;
+          td.textContent = '0.00s';
+          td.classList.remove('running');
+          status.innerHTML = 'SCREEN BLANKED<br>Verify focal recall ->';
+          playMetronomeTick(true);
+          showBlackoutQuiz();
+        }
+      }
+      flashRaf = requestAnimationFrame(step);
+    }
+
+    function showBlackoutQuiz() {
+      const data = POSTER_DATA[currentPosterKey];
+      const quizEl = document.getElementById('blackoutQuiz');
+      const choicesEl = document.getElementById('quizChoices');
+      const feedbackEl = document.getElementById('quizFeedback');
+      document.getElementById('quizPromptText').textContent = data.question;
+      choicesEl.innerHTML = '';
+      feedbackEl.style.display = 'none';
+
+      data.choices.forEach(c => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'quiz-btn';
+        b.textContent = c.text;
+        b.onclick = () => {
+          totalAttempts++;
+          if (c.correct) verifiedCount++;
+          document.getElementById('RecallScoreBadge').textContent = `Recall Score: ${verifiedCount} / ${totalAttempts} Verified`;
+          feedbackEl.style.display = 'block';
+          feedbackEl.style.borderColor = c.correct ? 'var(--jade-ok)' : 'var(--signal-vermilion)';
+          feedbackEl.innerHTML = `<strong style="color:${c.correct ? '#34d399' : '#f87171'};">${c.correct ? 'Hierarchy Verified:' : 'Hierarchy Missed:'}</strong> ${c.why}`;
+        };
+        choicesEl.appendChild(b);
+      });
+      quizEl.classList.add('visible');
+    }
+
+    function resetFlashLab() {
+      selectPoster(currentPosterKey);
+    }
+
+    // Initialize Specimen A on load
+    selectPoster('focal');
+
+    // -----------------------------------------------------------------------
+    // WORKBENCH 2: 16-BEAT TEEN TAAL SEQUENCER & LIVE CYMATIC CANVAS
+    // -----------------------------------------------------------------------
+    const PRESETS = {
+      theka: ['Dha','Dhin','Dhin','Dha', 'Dha','Dhin','Dhin','Dha', 'Dha','Tin','Tin','Ta', 'Ta','Dhin','Dhin','Dha'].map(b => b === 'Ta' ? 'Na' : b),
+      kayda: ['Dha','Na','Dhin','Na', 'Dha','Dha','Tin','Na', 'Na','Tin','Dhin','Na', 'Dha','Dha','Dhin','Na'],
+      khali: ['Dha','Dhin','Dha','Dhin', 'Dha','Dhin','Dha','Dhin', 'Tin','Tin','Tin','Na', 'Dha','Dhin','Dha','Dhin']
+    };
+
+    const BOL_ORDER = ['Dha', 'Dhin', 'Na', 'Tin'];
+    let currentBeats = [...PRESETS.theka];
+    let taalPlaying = false;
+    let taalTimer = null;
+    let stepIndex = 0;
+    let cymaticPhase = 0;
+    let activeHarmonic = 16;
+    let activeFreq = 294.0;
+    let pulseEnergy = 0.35;
+
+    const VIBHAG_META = [
+      { name: 'Vibhag 1', mark: 'Sam (X) // Beats 1-4' },
+      { name: 'Vibhag 2', mark: 'Tali 2 (2) // Beats 5-8' },
+      { name: 'Vibhag 3', mark: 'Khali (0) // Beats 9-12' },
+      { name: 'Vibhag 4', mark: 'Tali 3 (3) // Beats 13-16' }
+    ];
+
+    function renderTaalGrid() {
+      const container = document.getElementById('vibhagGrid');
+      container.innerHTML = '';
+      for (let v = 0; v < 4; v++) {
+        const box = document.createElement('div');
+        box.className = 'vibhag-box';
+        box.innerHTML = `<div class="vibhag-title"><span>${VIBHAG_META[v].name}</span><strong>${VIBHAG_META[v].mark}</strong></div>`;
+        const cells = document.createElement('div');
+        cells.className = 'beat-cells';
+        for (let b = 0; b < 4; b++) {
+          const idx = v * 4 + b;
+          const bol = currentBeats[idx];
+          const cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'beat-cell' + (idx === stepIndex && taalPlaying ? ' playing' : '');
+          cell.dataset.bol = bol;
+          cell.id = `beat-cell-${idx}`;
+          cell.innerHTML = `<span class="beat-num">BEAT ${String(idx + 1).padStart(2, '0')}</span><span class="beat-bol">${bol}</span>`;
+          cell.onclick = () => {
+            const nextBol = BOL_ORDER[(BOL_ORDER.indexOf(currentBeats[idx]) + 1) % BOL_ORDER.length];
+            currentBeats[idx] = nextBol;
+            renderTaalGrid();
+            triggerBolSynth(nextBol, idx);
+          };
+          cells.appendChild(cell);
+        }
+        box.appendChild(cells);
+        container.appendChild(box);
+      }
+    }
+
+    function triggerBolSynth(bol, idx) {
+      const ctx = ensureAudio();
+      pulseEnergy = 1.0;
+      if (bol === 'Dha') {
+        activeHarmonic = 16; activeFreq = 294.0;
+      } else if (bol === 'Dhin') {
+        activeHarmonic = 12; activeFreq = 330.0;
+      } else if (bol === 'Na') {
+        activeHarmonic = 24; activeFreq = 440.0;
+      } else {
+        activeHarmonic = 8; activeFreq = 392.0;
+      }
+      document.getElementById('cymaticModeText').textContent = `HARMONIC NODES: ${activeHarmonic}-FOLD (${bol.toUpperCase()})`;
+      document.getElementById('cymaticFreqText').textContent = `SYAHI RESONANCE: ${activeFreq.toFixed(1)} Hz`;
+
+      const divisionTag = idx === 0 ? 'Sam (Beat 1)' : idx === 8 ? 'Khali (Open Wave)' : `Vibhag ${Math.floor(idx/4)+1}`;
+      document.getElementById('activeBeatReadout').textContent = `Beat: ${String(idx + 1).padStart(2, '0')} / 16 (${divisionTag})`;
+
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      // Synthesize Bayan (low membrane) for Dha and Dhin
+      if (bol === 'Dha' || bol === 'Dhin') {
+        const bassOsc = ctx.createOscillator();
+        const bassGain = ctx.createGain();
+        bassOsc.type = 'sine';
+        bassOsc.frequency.setValueAtTime(92, now);
+        bassOsc.frequency.exponentialRampToValueAtTime(64, now + 0.22);
+        bassGain.gain.setValueAtTime(0.28, now);
+        bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+        bassOsc.connect(bassGain);
+        bassGain.connect(ctx.destination);
+        bassOsc.start(now);
+        bassOsc.stop(now + 0.27);
+      }
+
+      // Synthesize Dayan (tuned wooden treble drumhead with syahi overtone)
+      const dayOsc = ctx.createOscillator();
+      const dayGain = ctx.createGain();
+      dayOsc.type = bol === 'Na' ? 'triangle' : 'sine';
+      dayOsc.frequency.setValueAtTime(activeFreq, now);
+      dayGain.gain.setValueAtTime(0.22, now);
+      dayGain.gain.exponentialRampToValueAtTime(0.001, now + (bol === 'Na' ? 0.14 : 0.24));
+      dayOsc.connect(dayGain);
+      dayGain.connect(ctx.destination);
+      dayOsc.start(now);
+      dayOsc.stop(now + 0.25);
+    }
+
+    function toggleTaalPlayback() {
+      taalPlaying = !taalPlaying;
+      const label = document.getElementById('playTaalLabel');
+      if (taalPlaying) {
+        label.textContent = 'Stop 16-Beat Loop';
+        stepIndex = 0;
+        const runStep = () => {
+          document.querySelectorAll('.beat-cell').forEach((el, i) => {
+            el.classList.toggle('playing', i === stepIndex);
+          });
+          triggerBolSynth(currentBeats[stepIndex], stepIndex);
+          stepIndex = (stepIndex + 1) % 16;
+        };
+        runStep();
+        taalTimer = setInterval(runStep, 340);
+      } else {
+        label.textContent = 'Play 16-Beat Loop';
+        clearInterval(taalTimer);
+        document.querySelectorAll('.beat-cell').forEach(el => el.classList.remove('playing'));
+      }
+    }
+
+    function loadTaalPreset(name, btnEl) {
+      currentBeats = [...PRESETS[name]];
+      document.querySelectorAll('.taal-presets .chip-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderTaalGrid();
+    }
+
+    // Live 60fps Cymatic Standing-Wave Canvas
+    const cymCanvas = document.getElementById('cymaticCanvas');
+    const cymCtx = cymCanvas.getContext('2d');
+
+    function drawCymaticFrame() {
+      const w = cymCanvas.width;
+      const h = cymCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      cymCtx.clearRect(0, 0, w, h);
+
+      cymaticPhase += 0.025;
+      pulseEnergy = Math.max(0.25, pulseEnergy * 0.94);
+
+      // Outer Gajra rim
+      cymCtx.strokeStyle = 'rgba(245, 242, 235, 0.18)';
+      cymCtx.lineWidth = 1.5;
+      cymCtx.beginPath();
+      cymCtx.arc(cx, cy, 228, 0, Math.PI * 2);
+      cymCtx.stroke();
+
+      // 16 Beat Perimeter Ticks
+      for (let b = 0; b < 16; b++) {
+        const ang = (b / 16) * Math.PI * 2 - Math.PI / 2;
+        const isVibhag = b % 4 === 0;
+        const r1 = isVibhag ? 212 : 218;
+        const r2 = 228;
+        cymCtx.strokeStyle = isVibhag ? '#d99b26' : 'rgba(245, 242, 235, 0.35)';
+        cymCtx.lineWidth = isVibhag ? 2.2 : 1.2;
+        cymCtx.beginPath();
+        cymCtx.moveTo(cx + r1 * Math.cos(ang), cy + r1 * Math.sin(ang));
+        cymCtx.lineTo(cx + r2 * Math.cos(ang), cy + r2 * Math.sin(ang));
+        cymCtx.stroke();
+      }
+
+      // Standing Wave Nodal Rings
+      const rings = 9;
+      for (let rIdx = 1; rIdx <= rings; rIdx++) {
+        const baseR = 42 + rIdx * 18.5;
+        const amp = (2.2 + rIdx * 0.75) * pulseEnergy;
+        cymCtx.beginPath();
+        const steps = 160;
+        for (let s = 0; s <= steps; s++) {
+          const theta = (s / steps) * Math.PI * 2;
+          const wave = Math.sin(theta * activeHarmonic + cymaticPhase + rIdx * 0.35)
+                     + 0.4 * Math.cos(theta * (activeHarmonic / 2) - cymaticPhase);
+          const rr = baseR + amp * wave;
+          const x = cx + rr * Math.cos(theta);
+          const y = cy + rr * Math.sin(theta);
+          if (s === 0) cymCtx.moveTo(x, y);
+          else cymCtx.lineTo(x, y);
+        }
+        cymCtx.strokeStyle = rIdx % 2 === 0 ? 'rgba(224, 79, 51, 0.68)' : 'rgba(217, 155, 38, 0.75)';
+        cymCtx.lineWidth = 1.35;
+        cymCtx.stroke();
+      }
+
+      // Off-center Syahi Core
+      for (let sRing = 1; sRing <= 6; sRing++) {
+        cymCtx.beginPath();
+        cymCtx.arc(cx + 5 * (1 - sRing / 7), cy, sRing * 5.8, 0, Math.PI * 2);
+        cymCtx.strokeStyle = 'rgba(245, 242, 235, 0.75)';
+        cymCtx.lineWidth = 1.4;
+        cymCtx.stroke();
+      }
+
+      requestAnimationFrame(drawCymaticFrame);
+    }
+
+    renderTaalGrid();
+    drawCymaticFrame();
+
+    // -----------------------------------------------------------------------
+    // COPY STARTER HTML FOR BOBA DROPS
+    // -----------------------------------------------------------------------
+    function copyStarterTemplate(btn) {
+      const raw = document.getElementById('bobaStarterCode').textContent;
+      navigator.clipboard.writeText(raw).then(() => {
+        const msg = document.getElementById('copyConfirmMsg');
+        msg.textContent = 'Copied 34 lines to clipboard!';
+        setTimeout(() => { msg.textContent = 'Ready to deploy in 60s'; }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>
